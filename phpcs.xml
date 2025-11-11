@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<ruleset name="DGP 3D Cube 360 WordPress-Extra">
+  <description>PHPCS Ruleset fuer dgp-hube (DGP 3D Cube 360°) basierend auf WordPress-Extra Standard.</description>
+
+  <!-- Basis-Standard -->
+  <rule ref="WordPress-Extra"/>
+
+  <!-- Projekt-Pfade -->
+  <file>./dgp-hube.php</file>
+  <file>./build</file>
+
+  <!-- Ausnahmen / Feintuning nach Bedarf erweiterbar -->
+  <exclude-pattern>*/vendor/*</exclude-pattern>
+  <exclude-pattern>*/node_modules/*</exclude-pattern>
+</ruleset>

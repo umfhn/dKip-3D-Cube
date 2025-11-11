@@ -1,0 +1,103 @@
+=== DGP 3D Cube 360° (Stabilitäts-Set PRP v0.1) – Changelog ===
+
+--- 5.1.15-prp.0 (PRP v0.1 Stabilitätslinie, interne QA/Review-Version) ---
+*   TECH: Plugin-Header umbenannt in "DGP 3D Cube 360° (Stabilitäts-Set PRP v0.1)" zur klaren Trennung von produktiven 5.1.15-Builds.
+*   TECH: Version auf 5.1.15-prp.0 gesetzt; dient als interne Referenz für PRP-/QA-Gates und CI-Validierung.
+*   DOCS: README/Metadaten angepasst, um PRP-Linie und Stabilitätsfokus eindeutig sichtbar zu machen.
+*   HINWEIS: Kein Funktionsausbau; Fokus ausschließlich auf Navigation/Wrap/Arrow-State-Machine, Modal/Vollbild/A11y, Kompatibilität & Security laut PRP v0.1.
+*   HINWEIS: Diese Version ist für interne QA/PRP-Workflows vorgesehen und nicht als regulärer WP.org-Release gedacht.
+
+--- 5.1.15 (Doppelpfeil-Button Reparatur + Vollständige 6-Seiten-Navigation) ---
+*   REPAIR: Vertikaler Doppelpfeil-Button repariert - Button war dauerhaft deaktiviert (disabled="true") aufgrund falscher isDisabled-Logik
+*   REPAIR: updateVerticalDoubleArrowAccessibility() Funktion korrigiert - isDisabled von this._isAnimating auf false geändert
+*   REPAIR: Doppelpfeil-Button ist jetzt IMMER aktiviert und funktionsfähig auf allen 6 Seiten
+*   FEATURE: Vollständige 6-Seiten-Navigation mit Pfeilbuttons: front, right, back, left, top, bottom sind alle erreichbar
+*   FEATURE: Doppelpfeil-State-Machine funktioniert korrekt: Gürtel → Top → Bottom → Zurück zur Gürtelansicht
+*   FEATURE: Nahtlose 360°-Loop-Navigation ohne temporäre Deaktivierung während Animationen
+*   REPAIR: turn() und goto() Funktionen vollständig repariert für alle 6 Seiten
+*   DOCS: Vollständige Dokumentation der Reparaturen erstellt
+
+--- 5.1.14 (Navigation Vollständig Repariert + Vollbild Modal-Fix) ---
+*   REPAIR: Vollständige Reparatur der Pfeil-Button-Navigation - alle 6 Seiten (Seite 1-6) sind jetzt über Pfeiltasten erreichbar ohne Blockaden
+*   REPAIR: turn() Funktion korrigiert - fehlerhafte Index-Berechnung in linear6 Navigation behoben, virtuelle 360°-Loop-rotation implementiert
+*   REPAIR: Geometrisch korrekte 3D-Würfel-Navigation (statt linear6) für horizontale/vertikale Pfeil-Navigation
+*   FIX: Vollbild-Modus Modal wird jetzt in der Mitte-oben verankert (top-center) statt unterschiedlicher Positionen
+*   FEATURE: Kontinuierliche 360°-Rotation ohne Blockaden nach Seite 3 implementiert
+*   TECH: Virtueller Index für nahtlose Navigation zwischen allen 6 Seiten hinzugefügt
+
+--- 5.1.13 (Arrow Navigation) ---
+*   FEATURE: Pfeil-Buttons (UI) und Pfeiltasten steuern jetzt alle sechs Seiten – Gürtel links/rechts, Top/Bottom über Restore zu `lastBeltFace`.
+*   FEAT/FLAG: Experimenteller Linear-Lauf 1→6 via `data-arrow-mode="linear6"` (default off).
+*   MAINT: A11y-Labels + Live-Ansage enthalten Richtung & Ziel; Buttons/Keys melden `mode:'button'|'key'` in `dgp:hube:change`.
+*   MAINT: Navigation-Guard spart Events/Transition bei Clamp; Debug-Handle bleibt hinter `data-debug="1"`.
+
+--- 5.1.12 (Maintenance Clean & Arrow Fix) ---
+*   MAINT: Pointer-/Fullscreen-Listener werden einmalig gebunden und in `destroy()` sauber entfernt (inkl. MutationObserver für Auto-Cleanup).
+*   PERF: Vertikale Clamp-Szenarien lösen keine Transition/Events mehr aus; `announce()` aktualisiert Texturen/CTA nur bei tatsächlichem Face-Wechsel.
+*   FIX: Tastatur-Pfeile (↑/↓) und vertikale Turns berücksichtigen Top/Bottom vollständig und restaurieren `lastBeltFace`.
+*   TECH: Debug-Handle `__cube` hängt hinter `data-debug="1"`; `dgp:hube:change` behält konsistente `axis`/`dir` Payloads.
+
+--- 5.1.11 (Vertikalpfad Hotfix & Debug) ---
+*   FIX: Vertikale Drag/Swipe-Gesten reagieren auf allen Gürtel-Flächen zuverlässig; Top/Bottom clampen ohne ungewollte Wraps oder Jojo.
+*   FIX: `lastBeltFace` wird konsequent gepflegt, Restore aus Top/Bottom landet wieder auf der zuletzt aktiven Gürtel-Fläche.
+*   TECH: Neues Debug-Handle `__cube.getDebugState()` liefert read-only Statuswerte (`activeFace`, `lastBeltFace`, `axisLocked`, `lockedAxis`) für QA.
+*   TECH: Axis-Lock wird pro Interaktion sauber gesetzt/gelöst (`axisLocked`/`lockedAxis`), Events behalten `axis`/`dir`.
+
+--- 5.1.10 (Vertikalpfad Stabilisiert) ---
+*   FIX: Vertikale Drag/Swipe-Gesten (U/D) snappen jetzt WYSIWYG zur sichtbaren Fläche; das „Jojo“ zwischen Top/Bottom und Gürtel wurde eliminiert.
+*   FIX: Rückweg von Top/Bottom stellt die zuletzt aktive Gürtel-Fläche wieder her; Clamping verhindert Wraps nach oben/unten.
+*   FEATURE: Neues Flag `verticalSwipe` (`data-vertical-swipe="0|1"`) erlaubt das temporäre Abschalten des Vertikalpfads ohne Codeänderung.
+*   TECH: `dgp:hube:change` ergänzt jedes Event um `axis` (`'x'|'y'`) und `dir` (`'left'|'right'|'up'|'down'`) für klare Telemetrie.
+
+--- 5.1.9 (Preview: Wrap-Mode Hybrid) ---
+*   FEATURE: Neues Flag `wrapMode` im Block sowie `data-wrap-mode="hybrid"` im Frontend. Aktiviert endloses horizontales Swipen (Ring) ausschließlich für Drag/Swipe – Pfeil- und Tastatur-Navigation bleibt unverändert.
+*   FEATURE: `dgp:hube:change` Event liefert jetzt numerische Indizes (`from`,`to`) modulo 6 sowie die zugehörigen Face-Namen (`fromFace`,`toFace`) und `total`. Damit lassen sich Wraps ohne Sonderlogik auswerten.
+*   DOCS: README auf 5.1.9 aktualisiert und Wrap-Mode hinter Feature-Flag dokumentiert.
+
+--- 5.1.6 (Wartungsupdate) ---
+*   FIX: Der Vollbildmodus wird nun auf iOS-Geräten (Safari/WebView) korrekt bildschirmfüllend dargestellt. Die CSS-Implementierung wurde auf moderne Viewport-Einheiten (`100svh`) umgestellt.
+*   FIX: Die Farbeinstellungen für das Info-Fenster (Hintergrund, Text, Links) aus dem Editor werden nun korrekt angewendet, da die CSS-Variablen jetzt korrekt an das Modal übergeben werden.
+*   TWEAK: Alle Beschriftungen im Block-Editor, insbesondere für die Farbwähler, wurden präzisiert und sind nun eindeutig auf Deutsch formuliert.
+*   FIX: Der Vollbildmodus wird nun auf iOS-Geräten (Safari/WebView) korrekt bildschirmfüllend dargestellt. Die CSS-Implementierung wurde auf moderne Viewport-Einheiten (`100svh`) umgestellt, um Probleme mit dynamischen Browser-Leisten zu beheben.
+*   FEATURE: Neuer Inhaltsmodus "Quellcode (HTML+CSS)" für Info-Modals hinzugefügt. Ermöglicht die sichere Eingabe von rohem HTML und CSS, wobei das CSS automatisch gekapselt (gescoped) wird, um Konflikte mit dem Theme zu verhindern.
+
+--- 5.1.5 (Bugfixes für Vollbildmodus & Aktionen) ---
+*   FIX: Das Info-Modal wird nun korrekt im Vollbildmodus angezeigt und nicht mehr dahinter verborgen.
+*   FIX: Die Aktion "Trigger (Event)" funktioniert jetzt zuverlässig, auch wenn sie aus dem Vollbildmodus heraus gestartet wird. Das Overlay wird erst nach dem Beenden des Vollbildmodus korrekt ausgelöst.
+*   DOCS: Versionsnummer in PHP- und Readme-Dateien auf 5.1.5 aktualisiert.
+
+--- 5.1.4 (UI-Feinschliff & UX-Verbesserungen) ---
+*   TWEAK: Die Empfindlichkeit der Touch-Steuerung (Wischen) wurde für eine direktere Reaktion erhöht.
+*   TWEAK: Der aktive Navigationspunkt (Dot) verwendet nun auch in der Standardansicht die Signalfarbe, um die aktuelle Seite deutlicher hervorzuheben.
+*   DOCS: Versionsnummer in der README-Datei auf 5.1.4 aktualisiert.
+
+--- 5.1.3 (Touch-Steuerung & Stabilität) ---
+*   FEATURE: Robuste Touch-Steuerung (Wischen/Swipen) für den Würfel implementiert.
+*   TWEAK: Jede Wischgeste löst nun genau eine 90°-Drehung zur nächsten Seite aus.
+*   FIX: Intelligentes Einrasten des Würfels nach Wischgesten, basierend auf Richtung und Geschwindigkeit.
+*   FIX: Verbesserte Scroll-Hijacking-Prävention, um Konflikte mit dem nativen Browser-Scrollen zu vermeiden.
+*   FIX: Entfernung der automatischen Dreh-Animation bei Inaktivität (Idle-Animation).
+
+--- 5.1.2 (Editor-Verbesserungen) ---
+*   TWEAK: Die Akkordeon-Panels im Inspektor sind nun exklusiv, d.h. es kann immer nur ein Hauptbereich gleichzeitig geöffnet sein. Dies verbessert die Übersichtlichkeit erheblich.
+*   TWEAK: Alle Akkordeon-Panels sind standardmäßig geschlossen, um eine aufgeräumte Ansicht beim Öffnen des Inspektors zu gewährleisten.
+*   TWEAK: Die Einstellungen für die einzelnen Bilder wurden in einem eigenen Haupt-Akkordeon zusammengefasst, um die Seitenleiste zu strukturieren.
+
+--- 5.1.0 (UI/UX & Layout-Optimierung) ---
+*   FEATURE: Komplette Überarbeitung des Navigations-Layouts für verbesserte Übersichtlichkeit und responsives Verhalten auf allen Gerätegrößen.
+*   FEATURE: Einführung eines dreizeiligen Layouts in der Navigation (Steuer-Buttons, Pfeile/Zähler, Navigationspunkte).
+*   FEATURE: Visuelles Feedback für Lesezeichen direkt auf den Navigationspunkten.
+*   FEATURE: Scrollbare Navigationspunkte bei einer großen Anzahl von Bildern, um Überlappungen zu vermeiden.
+*   FEATURE: Scrollbare Bildübersicht im Editor-Backend für bessere Verwaltbarkeit.
+*   FIX: Behebung von Rendering-Artefakten und Unschärfe bei SVG-Icons durch optimierte CSS-Regeln.
+*   FIX: Diverse Stabilitätsverbesserungen und Bugfixes im Frontend-Layout.
+*   TWEAK: Navigationspunkte wurden verkleinert und dezenter gestaltet.
+
+--- 5.0.0 (Final Release) ---
+*   FINAL: Das Plugin wurde als stabile, finale Version 5.0.0 eingestuft und veröffentlicht.
+*   FEATURE: Umfassende Code-Stabilisierung und Bugfixes in allen Kernmodulen (PHP, JS, CSS).
+*   FEATURE: Optimierte Fehlerbehandlung und Tests für alle unterstützten Geräte und Betriebssysteme.
+*   HINWEIS: Das Plugin befindet sich ab sofort im Wartungsmodus. Zukünftige Updates konzentrieren sich auf Bugfixes und Sicherheit.
+*   HINWEIS: Die Steuerung per Touch-Geste (Wischen) ist in dieser Version bewusst NICHT aktiviert, um maximale Stabilität zu gewährleisten. Die Interaktion erfolgt über Klick-Buttons und Tastatur.
+*   DOCS: Aktualisierung der Plugin-Beschreibung und der README.md, um den finalen Status und den Funktionsumfang zu reflektieren.
+*   DOCS: Erstellung dieser changelog.txt.

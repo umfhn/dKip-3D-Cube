@@ -1,0 +1,27 @@
+==========================================
+CLEANUP REPORT - dgp-hube v5.1.15-prp.0
+Timestamp: Tue Nov 11 21:21:36 UTC 2025
+Mode: DEV_CLEAN
+==========================================
+
+VENDOR CHECK: REMOVE (No active autoload usage)
+
+ZIP BUILD SUMMARY:
+------------------
+Package: dist/dgp-hube-v5.1.15-prp.0-clean.zip
+Size: 84K
+
+CONTENTS:
+Archive:  ../dist/dgp-hube-v5.1.15-prp.0-clean.zip
+  Length      Date    Time    Name
+---------  ---------- -----   ----
+    20000  11-11-2025 21:21   build/index.js
+     9900  11-11-2025 21:21   build/style.css
+     8900  11-11-2025 21:21   build/editor.css
+     6800  11-11-2025 21:21   build/modal.js
+     9500  11-11-2025 21:21   build/view.js
+     9038  11-11-2025 21:21   dgp-hube.php
+    17200  11-11-2025 21:21   README.md
+     4000  11-11-2025 21:21   changelog.txt
+---------                     -------
+    85338                     8 files

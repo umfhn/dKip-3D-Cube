@@ -1,0 +1,25 @@
+includes: []
+
+parameters:
+  level: 5
+  paths:
+    - dgp-hube.php
+  tmpDir: .phpstan-cache
+
+  checkMissingIterableValueType: true
+  checkGenericClassInNonGenericObjectType: true
+  checkMissingTypehints: true
+  reportUnmatchedIgnoredErrors: true
+
+  ignoreErrors:
+    # WordPress-spezifische globale Funktionen/Variablen werden projektspezifisch geduldet.
+    - '#Function apply_filters\(.+\) not found#'
+    - '#Function do_action\(.+\) not found#'
+    - '#Function esc_(html|attr|url)\(.+\) not found#'
+    - '#Function wp_kses\(.+\) not found#'
+    - '#Function wp_json_encode\(.+\) not found#'
+    - '#Function register_block_type\(.+\) not found#'
+    - '#Function get_block_wrapper_attributes\(.+\) not found#'
+    - '#Call to function __\(.+\) not found#'
+    - '#Call to function is_admin\(\) not found#'
+    - '#Variable \$allowed might not be defined.#'

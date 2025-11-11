@@ -1,0 +1,25 @@
+=== ROLLBACK-PUNKT Version 5.1.14 vor Doppelpfeil-Implementierung ===
+Datum: 2025-11-06T18:00:21.886Z
+
+GESICHERTE DATEIEN:
+- dgp-hube.php (Version 5.1.14)
+- build/view.js (Navigation vollständig repariert, 6-Seiten)
+- changelog.txt (Version 5.1.14 dokumentiert)
+- README.md (Version 5.1.14)
+
+FUNKTIONEN IM AUSGANGSZUSTAND:
+- Pfeil-Button-Navigation für alle 6 Seiten (Seite 1-6) repariert
+- Kontinuierliche 360°-Loop-Rotation ohne Blockaden
+- Vollbild-Modus Modal-Mitte-oben-Verankerung (top-center)
+- Geometrisch korrekte 3D-Würfel-Navigation
+- Virtueller Index für nahtlose Navigation
+- getrennte vertikale Pfeil-Buttons (↑ ↓) vorhanden
+
+ZIEL:
+- Zusammenfassung der vertikalen Pfeil-Buttons (↑ ↓) zu einem einzigen Doppelpfeil-Button
+- Intelligente Toggle-Logik je nach aktueller Würfelseite
+- Beibehaltung aller bereits reparierten Funktionen
+
+ROLLBACK-ANWEISUNG:
+Im Fehlerfall können alle Änderungen rückgängig gemacht werden,
+indem diese gesicherte Version wiederhergestellt wird.

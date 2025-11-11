@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Optimierte Navigation - Nur Doppelpfeil</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        .test-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        .header {
+            background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        .header h1 {
+            margin: 0 0 10px 0;
+            font-size: 2.5em;
+            font-weight: 300;
+        }
+        .optimization-notice {
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+            color: white;
+            padding: 20px;
+            text-align: center;
+            font-size: 1.2em;
+            font-weight: 600;
+        }
+        .cube-container {
+            padding: 40px;
+            text-align: center;
+            background: #f8f9fa;
+        }
+        .test-comparison {
+            display: flex;
+            gap: 30px;
+            padding: 30px;
+            background: #e8f4f8;
+        }
+        .comparison-item {
+            flex: 1;
+            text-align: center;
+        }
+        .before-after {
+            background: #fff;
+            border: 2px solid #dee2e6;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        .before-after h3 {
+            margin-top: 0;
+            color: #495057;
+        }
+        .old-ui {
+            color: #dc3545;
+            text-decoration: line-through;
+        }
+        .new-ui {
+            color: #28a745;
+            font-weight: bold;
+        }
+        .status-ok {
+            background: #d4edda;
+            color: #155724;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-weight: 600;
+        }
+        .comparison-nav {
+            font-size: 1.5em;
+            margin: 10px 0;
+        }
+        .arrow {
+            display: inline-block;
+            margin: 0 5px;
+            padding: 5px 10px;
+            border-radius: 5px;
+        }
+        .old-arrow {
+            background: #f8d7da;
+            color: #721c24;
+            text-decoration: line-through;
+        }
+        .new-arrow {
+            background: #d4edda;
+            color: #155724;
+        }
+        .benefits {
+            background: #e8f5e8;
+            border-left: 5px solid #28a745;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        .benefit-item {
+            margin: 10px 0;
+            display: flex;
+            align-items: center;
+        }
+        .benefit-icon {
+            color: #28a745;
+            font-size: 1.2em;
+            margin-right: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="test-container">
+        <div class="header">
+            <h1>🎯 Optimierte Navigation</h1>
+            <p>Nur noch Doppelpfeil - Saubere Benutzeroberfläche</p>
+        </div>
+
+        <div class="optimization-notice">
+            ✅ OPTIMIERUNG ABGESCHLOSSEN: Separate Hoch/Runter-Pfeile wurden entfernt
+        </div>
+
+        <div class="test-comparison">
+            <div class="comparison-item">
+                <div class="before-after">
+                    <h3>❌ VORHER (Überladen)</h3>
+                    <div class="comparison-nav">
+                        <span class="arrow old-arrow">←</span>
+                        <span class="arrow old-arrow">↑</span>
+                        <span class="arrow old-arrow">↓</span>
+                        <span class="arrow old-arrow">→</span>
+                    </div>
+                    <p class="old-ui">Separate Hoch/Runter-Pfeile</p>
+                    <div class="status-ok">4 Buttons für Navigation</div>
+                </div>
+            </div>
+            
+            <div class="comparison-item">
+                <div class="before-after">
+                    <h3>✅ NACHHER (Optimiert)</h3>
+                    <div class="comparison-nav">
+                        <span class="arrow new-arrow">←</span>
+                        <span class="arrow new-arrow">↑↓</span>
+                        <span class="arrow new-arrow">→</span>
+                    </div>
+                    <p class="new-ui">Nur noch Doppelpfeil</p>
+                    <div class="status-ok">3 Buttons - Intelligente Navigation</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="cube-container">
+            <h2>🧊 Optimierte 3D-Würfel Navigation</h2>
+            
+            <!-- Optimierter Test-Würfel - nur Doppelpfeil -->
+            <div class="wp-block-dgp-hube-cube" 
+                 data-uid="optimized-5-1-14" 
+                 data-show-nav="1"
+                 data-show-action="1"
+                 data-show-audio="0"
+                 data-show-zoom="1"
+                 data-vertical-toggle="1"
+                 data-arrow-mode="linear6"
+                 data-wrap-mode="ring"
+                 style="width: 400px; margin: 0 auto;">
+                
+                <script class="dgp-images" type="application/json">[{
+                    "url": "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjMzc0NEU2Ii8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIyMCIgZmlsbD0id2hpdGUiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGR5PSIuM2VtIj5Gcm9udCAoMSk8L3RleHQ+PC9zdmc+",
+                    "label": "Seite 1: Front",
+                    "alt": "Front View",
+                    "action": "none"
+                }, {
+                    "url": "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjMTBCOUY4Ii8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIyMCIgZmlsbD0id2hpdGUiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGR5PSIuM2VtIj5SaWdodCAoMik8L3RleHQ+PC9zdmc+",
+                    "label": "Seite 2: Right",
+                    "alt": "Right View",
+                    "action": "none"
+                }, {
+                    "url": "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjMTBCOUY4Ii8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIyMCIgZmlsbD0id2hpdGUiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGR5PSIuM2VtIj5CaWNrICgzKTwvdGV4dD48L3N2Zz4=",
+                    "label": "Seite 3: Back",
+                    "alt": "Back View",
+                    "action": "none"
+                }, {
+                    "url": "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjRERERDBCIi8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIyMCIgZmlsbD0iIzAwMCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPkxlZnQgKDQpPC90ZXh0Pjwvc3ZnPg==",
+                    "label": "Seite 4: Left",
+                    "alt": "Left View",
+                    "action": "none"
+                }, {
+                    "url": "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjRkZENzAwIi8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIyMCIgZmlsbD0iIzAwMCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPlRvcCAoNSk8L3RleHQ+PC9zdmc+",
+                    "label": "Seite 5: Top",
+                    "alt": "Top View",
+                    "action": "none"
+                }, {
+                    "url": "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjMTAwOTFFIi8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIyMCIgZmlsbD0id2hpdGUiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGR5PSIuM2VtIj5Cb3R0b20gKDYpPC90ZXh0Pjwvc3ZnPg==",
+                    "label": "Seite 6: Bottom",
+                    "alt": "Bottom View",
+                    "action": "none"
+                }]</script>
+                
+                <div class="dgp-cube-canvas">
+                    <div class="dgp-cube-scene">
+                        <div class="dgp-cube">
+                            <!-- Würfelseiten werden automatisch generiert -->
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="dgp-cube-nav">
+                    <!-- Navigation wird automatisch generiert -->
+                </div>
+                
+                <div class="dgp-cube-a11y">
+                    <!-- Barrierefreiheit-Informationen -->
+                </div>
+            </div>
+        </div>
+
+        <div class="benefits">
+            <h3>✨ Optimierungsvorteile</h3>
+            <div class="benefit-item">
+                <span class="benefit-icon">🎨</span>
+                <span><strong>Saubere UI:</strong> Weniger Button-Clutter, übersichtlicher</span>
+            </div>
+            <div class="benefit-item">
+                <span class="benefit-icon">🧠</span>
+                <span><strong>Intelligenter:</strong> Doppelpfeil reagiert kontextabhängig</span>
+            </div>
+            <div class="benefit-item">
+                <span class="benefit-icon">⚡</span>
+                <span><strong>Effizienter:</strong> Ein Klick für komplette vertikale Navigation</span>
+            </div>
+            <div class="benefit-item">
+                <span class="benefit-icon">🔧</span>
+                <span><strong>Funktional:</strong> Gürtel→Top→Bottom→Gürtel in logischer Reihenfolge</span>
+            </div>
+            <div class="benefit-item">
+                <span class="benefit-icon">♿</span>
+                <span><strong>Accessibility:</strong> ARIA-Labels und Screen-Reader-Support</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- CSS einbinden -->
+    <link rel="stylesheet" href="build/style.css">
+    <link rel="stylesheet" href="build/editor.css">
+    
+    <!-- JavaScript einbinden -->
+    <script src="build/view.js"></script>
+</body>
+</html>

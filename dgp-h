@@ -1,0 +1,161 @@
+# KEEP-LIST - DGP 3D Cube NEXT v6.0.0-prp.0
+
+## Zweck
+Diese Whitelist definiert **EXAKT**, welche Dateien und Verzeichnisse in das finale Distributionspaket (ZIP) aufgenommen werden sollen.
+
+## Produktionsrelevante Dateien (INS ZIP)
+
+### Haupt-Plugin-Dateien
+```
+dgp-hube-next.php           # Haupt-Plugin-Datei
+block.json                  # Block-Konfiguration
+README.md                   # Plugin-Dokumentation
+CHANGELOG.md                # Version-Historie
+```
+
+### Build-Verzeichnis (Minifizierte Assets)
+```
+build/                      # Komplettes Build-Verzeichnis
+├── index.js               # Navigation Kernel + A11y
+├── view.js                # Frontend Controller  
+├── modal.js               # Modal/Fullscreen Modul
+├── style.css              # Frontend Styles (CSS)
+└── editor.css             # Editor Styles (CSS)
+```
+
+### Dokumentation (Optional - falls für End-User relevant)
+```
+docs/                      # Benutzer-Dokumentation
+├── README.md              # Haupt-Dokumentation
+├── NAVIGATION_ERKLÄRUNG.md # Navigation-Guide
+├── DOCS_OVERVIEW.md       # Dokumentations-Übersicht
+└── REPRO-CHECKLISTEN.md   # QA-Test-Protokolle
+```
+
+### Demo-Dateien (Optional)
+```
+demos/                     # Demo-Dateien für End-User
+└── demo-basic.html        # Interaktive Demo
+```
+
+## Ignorierte Verzeichnisse (NICHT im ZIP)
+
+### Git & Version Control
+```
+.git/
+.github/
+.gitignore
+.gitattributes
+```
+
+### Editor & IDE
+```
+.vscode/
+.idea/
+*.code-workspace
+.history/
+```
+
+### Node.js & Package Management
+```
+node_modules/
+package.json
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+.npmrc
+```
+
+### Development Tools
+```
+.eslintrc*
+.prettierrc*
+.stylelintrc*
+phpstan.neon
+phpcs.xml*
+.editorconfig
+.husky/
+```
+
+### Testing & Coverage
+```
+tests/
+coverage/
+reports/
+screenshots/
+```
+
+### Build-Tools & Scripts
+```
+src/
+tools/
+scripts/
+examples/
+storybook/
+```
+
+### Temporary & Cache Files
+```
+*.map
+*.log
+*.tmp
+*.bak
+*.swp
+.DS_Store
+Thumbs.db
+._*
+```
+
+### Dokumentation (Developer-only)
+```
+docs/evidence/             # QA-Evidenz (nicht für End-User)
+docs/logs/                 # Log-Dateien
+docs/repro/                # Repro-Protokolle
+```
+
+### Composer (Falls vorhanden)
+```
+composer.json
+composer.lock
+vendor/                    # BEHALTEN nur wenn Autoload benötigt
+```
+
+## Wichtige Entscheidungen
+
+### vendor/-Verzeichnis
+- **Status**: BEHALTEN falls `vendor/autoload.php` existiert und `require` im Code verwendet wird
+- **Begründung**: Autoloads werden zur Laufzeit benötigt
+- **Check**: Wird vor ZIP-Erstellung automatisch geprüft
+
+### docs/-Verzeichnis
+- **Benutzer-Dokumentation**: BEHALTEN (README.md, Navigation-Guide)
+- **Developer-Evidenz**: ENTFERNEN (evidence/, logs/, repro/)
+- **Begründung**: End-User brauchen Anleitung, nicht QA-Metadaten
+
+### build/-Verzeichnis
+- **Status**: VOLLSTÄNDIG BEHALTEN
+- **Begründung**: Minifizierte Assets werden zur Laufzeit benötigt
+- **Alternative**: src/ wird ignoriert, build/ ist die Runtime-Version
+
+## Qualitätskriterien
+
+### Größe
+- **Ziel**: < 2MB für das finale ZIP
+- **Current**: Schätzung ~1.5MB (build/ + docs/ + demos/)
+
+### Vollständigkeit
+- ✅ Alle PHP-Laufzeitdateien enthalten
+- ✅ Alle JS/CSS-Assets enthalten  
+- ✅ Benutzer-Dokumentation enthalten
+- ❌ Keine Dev-Tools, Tests oder Metadaten
+
+### Sicherheit
+- ✅ Keine .env-Dateien
+- ✅ Keine API-Keys oder Passwörter
+- ✅ Keine Entwickler-Kommentare mit sensiblen Daten
+
+---
+
+**Letzte Aktualisierung**: 2025-11-11T21:08:07Z
+**Version**: KEEP-LIST v1.0
+**Plugin**: DGP 3D Cube NEXT v6.0.0-prp.0

@@ -1,0 +1,504 @@
+/* Editor-spezifische Stile (können auch in editor.css) */
+.dgp-editor-thumb {
+  position: relative; /* Wichtig für die Positionierung der Badges */
+}
+.dgp-editor-thumb-badges {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  display: flex;
+  gap: 4px;
+  pointer-events: none; /* Damit sie nicht im Weg sind */
+}
+.dgp-editor-badge {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  background: rgba(0, 0, 0, 0.6);
+  color: #fff;
+  border-radius: 50%;
+}
+/* Frontend styles – präzise Geometrie & saubere Nav */
+.wp-block-dgp-hube-cube {
+  --pad: 4%;
+  --nav-h: 28%;
+
+  /* Farben – Grund */
+  --dgp-surface:        #0b0f16;
+  --dgp-surface-2:      rgba(255,255,255,.02);
+  --dgp-surface-3:      rgba(0,0,0,.12);
+  --dgp-text:           #ffffff;
+  --dgp-border:         rgba(255,255,255,.65);
+  --dgp-sep:            rgba(255,255,255,.08);
+
+  /* Akzent/Status */
+  --dgp-accent:         #6cd4ff;
+  --dgp-focus:          rgba(255,255,255,.35);
+
+  /* Pfeile */
+  --dgp-arrow-bg:       rgba(255,255,255,.06);
+  --dgp-arrow-bg-hover: rgba(255,255,255,.12);
+  --dgp-arrow-border:   rgba(255,255,255,.65);
+  --dgp-arrow-icon:     #ffffff;
+
+  /* Dots */
+  --dgp-dot-border:     rgba(255,255,255,.65);
+  --dgp-dot-active-bg:  #ffffff;
+  --dgp-dot-ring:       rgba(255,255,255,.25);
+
+  /* Steuerbuttons */
+  --dgp-ctrl-bg:        transparent;
+  --dgp-ctrl-bg-hover:  rgba(255,255,255,.12);
+  --dgp-ctrl-border:    rgba(255,255,255,.60);
+  --dgp-ctrl-text:      #ffffff;
+  --dgp-ctrl-hot:       #6cd4ff;
+
+  /* Lightbox */
+  --dgp-backdrop:       rgba(0,0,0,.70);
+  --dgp-lightbox-shadow: 0 8px 30px rgba(0,0,0,.5);
+
+  /* Border & Rounding */
+  --dgp-radius-canvas:  14px;
+  --dgp-radius-nav:     14px;
+  --dgp-radius-pill:    12px;
+  --dgp-radius-round:   9999px;
+  --dgp-border-w:       1px;
+
+  /* Modal */
+  --dgp-modal-bg: #1a1f29;
+  --dgp-modal-text: #ffffff;
+  --dgp-modal-link: var(--dgp-accent, #6cd4ff);
+  --dgp-modal-shadow: 0 8px 30px rgba(0,0,0,.5);
+
+  /* Dot-Größen */
+  --dgp-dot: 10px;
+  --dgp-dot-active: 12px;
+
+  /* Typografie */
+  --dgp-title-size: 0.9rem;
+  --dgp-title-transform: none;
+  --dgp-btn-size: 0.9rem;
+  --dgp-font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+
+  position: relative;
+  background: var(--dgp-surface);
+  color: var(--dgp-text);
+  padding: var(--pad);
+  overflow: hidden;
+  outline: none;
+  user-select: none;
+  border-radius: var(--dgp-radius-canvas);
+}
+
+/* Canvas/Scene/Nav */
+.dgp-cube-canvas { position:absolute; left:0; right:0; top:0; bottom:var(--nav-h); }
+.dgp-cube-nav    { position:absolute; z-index:2; left:0; right:0; bottom:0; height:var(--nav-h); padding: .75rem .75rem calc(1.2rem + env(safe-area-inset-bottom));
+                   display:flex; align-items:center; justify-content:center;
+                   background: linear-gradient(180deg, var(--dgp-surface-2), var(--dgp-surface-3));
+                   border-top: var(--dgp-border-w-canvas, 1px) solid var(--dgp-sep);
+                   border-bottom-left-radius: var(--dgp-radius-nav);
+                   border-bottom-right-radius: var(--dgp-radius-nav);
+                 }
+
+/* Vollbild-Modus: Canvas füllt den ganzen Block */
+.wp-block-dgp-hube-cube[data-fullscreen-mode="1"] .dgp-cube-canvas {
+  bottom: 0;
+}
+
+/* 3:4 Fix */
+.wp-block-dgp-hube-cube[data-aspect="3:4"] { aspect-ratio: 3 / 4; }
+
+/* 3D Szene */
+.dgp-cube-scene {
+  position: relative;
+  width:100%;
+  height:100%;
+  perspective:1200px;
+  -webkit-perspective:1200px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+.dgp-cube {
+  transform-style:preserve-3d;
+  -webkit-transform-style:preserve-3d;
+  transition:transform .6s cubic-bezier(0.25,1,0.5,1);
+  will-change:transform;
+  touch-action:none;
+}
+.dgp-cube__face {
+  position:absolute;
+  inset:0;
+  background-size:cover;
+  background-position:center;
+  border:0;
+  padding:0;
+  margin:0;
+  backface-visibility:hidden;
+  -webkit-backface-visibility:hidden;
+  cursor:grab;
+}
+
+/* NEUES LAYOUT: 3-Spalten-Grid: [Pfeil] [Mitte] [Pfeil] */
+.dgp-nav-wrap {
+  display:grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  width: 100%;
+  padding: 0 .75rem;
+}
+.dgp-nav-center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  min-width: 0; /* Verhindert Überlaufen in Flex/Grid-Containern */
+}
+.dgp-nav-controls{ display:flex; gap: 12px; }
+.dgp-ctrl-btn{
+  height: 40px;
+  width: 40px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border-radius: 999px;
+  border: 1px solid var(--dgp-ctrl-border, rgba(255,255,255,.6));
+  background: transparent;
+  color: var(--dgp-ctrl-text);
+  cursor: pointer;
+  transition: background .2s, border-color .2s, box-shadow .2s, transform .1s;
+}
+/* NEU: Hover-Zustand für bessere Erkennbarkeit */
+.dgp-ctrl-btn:hover:not(:disabled) {
+  background: var(--dgp-ctrl-bg-hover, rgba(255,255,255,.12));
+}
+/* NEU: Active-Zustand für Klick-Feedback */
+.dgp-ctrl-btn:active:not(:disabled) {
+  transform: scale(0.96);
+}
+/* Pfeil-Buttons: strikt rund */
+.dgp-cube-nav .dgp-nav-btn{
+  width: var(--dgp-arrow-size, 44px);
+  height: var(--dgp-arrow-size, 44px);
+  border-radius: var(--dgp-radius-round);
+  padding: 0;
+  line-height: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--dgp-arrow-bg, rgba(255,255,255,.06));
+  border: var(--dgp-border-w-arrow, 1px) solid var(--dgp-arrow-border, rgba(255,255,255,.65));
+  color: var(--dgp-arrow-icon);
+  cursor: pointer;
+  transition: background .2s, transform .06s ease-out, box-shadow .2s;
+  box-shadow: var(--dgp-shadow-arrow);
+}
+
+.dgp-cube-nav .dgp-nav-btn:hover{
+  background: var(--dgp-arrow-bg-hover, rgba(255,255,255,.12));
+  box-shadow: var(--dgp-shadow-arrow-hover);
+}
+.dgp-cube-nav .dgp-nav-btn:active{ transform: scale(.97); } /* haptik */
+
+.dgp-nav-pagination {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.dgp-nav-dots{
+  min-height: 28px;
+  display: flex; align-items: center; justify-self: center; gap: 4px;
+}
+.dgp-nav-counter {
+  font-size: 0.8rem;
+  color: var(--dgp-text);
+  opacity: 0.7;
+  font-variant-numeric: tabular-nums;
+}
+
+.dgp-ctrl-btn.is-active {
+  box-shadow: inset 0 0 0 1px #fff, 0 0 8px 2px var(--dgp-accent, #6cd4ff);
+}
+.dgp-dot{
+  /* Vergrößerte, unsichtbare Klickfläche */
+  position: relative;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: none;
+  padding:0; margin:0; line-height:0; cursor:pointer;
+}
+.dgp-dot::before {
+  content: '';
+  width: var(--dgp-dot); height: var(--dgp-dot);
+  border-radius: var(--dgp-radius-round);
+  background: transparent;
+  border: 1px solid var(--dgp-dot-border, rgba(255,255,255,.65));
+  transition: all .2s;
+}
+.dgp-dot[aria-current="true"]{
+  pointer-events: none;
+}
+.dgp-dot[aria-current="true"]::before{
+  width: var(--dgp-dot-active);
+  height: var(--dgp-dot-active);
+  background: var(--dgp-dot-active-bg, #fff);
+  border-color: var(--dgp-dot-active-bg, #fff);
+  box-shadow: 0 0 0 2px var(--dgp-dot-focus-ring, rgba(255,255,255,.25));
+}
+/* VERBESSERT: Deutlicherer "is-playing"-Zustand mit Leuchteffekt */
+.dgp-ctrl-audio.is-playing{
+  background: rgba(255,255,255,.12);
+  box-shadow: inset 0 0 0 1px #fff, 0 0 8px 2px var(--dgp-accent, #6cd4ff);
+}
+
+.dgp-ctrl-action.is-hot{
+  border-color: var(--dgp-ctrl-hot, var(--dgp-accent));
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--dgp-ctrl-hot) 35%, transparent);
+}
+.dgp-ctrl-action.is-hot:hover{ background: rgba(108,212,255,.10); }
+.dgp-ctrl-btn:disabled,
+.dgp-ctrl-btn.is-disabled{
+  opacity: .5;
+  cursor: not-allowed;
+  background: var(--dgp-ctrl-disabled, transparent) !important;
+  border-color: color-mix(in srgb, var(--dgp-ctrl-border) 50%, transparent) !important;
+}
+/* A11y-Live-Region bleibt unsichtbar */
+.dgp-sr-only{
+  position:absolute !important;
+  width:1px; height:1px; padding:0; margin:-1px; overflow:hidden;
+  clip:rect(0,0,0,0); white-space:nowrap; border:0;
+}
+
+/* A11y-Live-Region bleibt unsichtbar */
+.dgp-cube-a11y{
+  position:absolute !important; width:1px; height:1px; margin:-1px; padding:0; border:0;
+  clip:rect(0 0 0 0); clip-path:inset(50%); overflow:hidden; white-space:nowrap;
+}
+
+/* Bildtitel/Caption – fest oben links im Canvas */
+.dgp-cube-caption{
+  position:absolute;
+  z-index:5;                 /* über dem Cube, unterhalb globaler Overlays */
+  inset: .5rem auto auto .75rem; /* top / left */
+  padding:.2rem .5rem;
+  font-size:.95rem;
+  color:#fff;
+  background: color-mix(in srgb, var(--dgp-surface) 65%, transparent);
+  border: var(--dgp-border-w) solid color-mix(in srgb, var(--dgp-border) 40%, transparent);
+  border-radius:.5rem;
+  pointer-events:none;       /* niemals klickfangend */
+}
+
+.dgp-hube-lightbox{
+  position:fixed; inset:0; z-index:99999; display:none;
+  align-items:center; justify-content:center;
+}
+.dgp-lightbox.is-open{ display:flex; }
+.dgp-lightbox__backdrop{
+  position:absolute; inset:0; background: var(--dgp-backdrop);
+}
+.dgp-lightbox__content{
+  position:relative;
+  max-width:92%; max-height:92%;
+  display:flex; /* Damit das Bild die Größe bestimmt */
+}
+.dgp-lightbox__img{
+  /* Erzwingt 1:1-Verhältnis und verhindert Verzerrung */
+  aspect-ratio: 1 / 1;
+  object-fit: contain;
+  box-shadow: var(--dgp-lightbox-shadow); border-radius: var(--dgp-radius-lightbox, 10px);
+  image-rendering: -webkit-optimize-contrast;
+}
+.dgp-lightbox__close{
+  position:absolute; top:8px; right:8px;
+  display:flex; align-items:center; justify-content:center;
+  background:transparent; color:#fff; border:1px solid rgba(255,255,255,.6);
+  border-radius:999px; width:36px; height:36px; cursor:pointer;
+  padding:0; /* Sicherstellen, dass kein Innenabstand die Zentrierung stört */
+  z-index: 10; /* Stellt sicher, dass der Button über dem Bild liegt */
+}
+
+/* --- Modal (intern) --- */
+.dgp-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 100000; /* Über dem Würfel, unter der Lightbox und über dem FS-Close-Button */
+  padding: 2rem;
+  display: flex;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 280ms cubic-bezier(.2,.8,.2,1), visibility 280ms;
+}
+.dgp-modal.is-open {
+  opacity: 1;
+  visibility: visible;
+}
+/* Wenn das Modal im Vollbild-Container ist, positioniere es absolut statt fixed */
+.wp-block-dgp-hube-cube .dgp-modal {
+  position: absolute;
+}
+.dgp-modal__backdrop {
+  position: absolute;
+  inset: 0;
+  background: var(--dgp-backdrop);
+}
+.dgp-modal__dialog {
+  position: relative;
+  background: var(--dgp-modal-bg, #1a1f29);
+  border: 1px solid color-mix(in srgb, var(--dgp-modal-text, #fff) 20%, transparent);
+  border-radius: var(--dgp-modal-radius, 10px);
+  padding: var(--dgp-modal-padding, 20px);
+  max-width: var(--dgp-modal-maxw, 720px);
+  width: 100%;
+  min-width: 200px;
+  max-height: 90%;
+  overflow-y: auto;
+  color: var(--dgp-modal-text, #fff);
+  box-shadow: var(--dgp-modal-shadow);
+  transition: transform 280ms cubic-bezier(.2,.8,.2,1), opacity 280ms;
+}
+.dgp-modal.anim .dgp-modal__dialog { transform: scale(.96) translateY(4px); }
+.dgp-modal.anim.is-open .dgp-modal__dialog { transform: scale(1) translateY(0); }
+
+.dgp-modal__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 1rem;
+  padding-bottom: .75rem;
+  margin-bottom: 1rem;
+  border-bottom: 1px solid color-mix(in srgb, var(--dgp-modal-text, #fff) 10%, transparent);
+}
+
+/* runde Variante (Icon-only) */
+.dgp-ctrl-btn.is-round{
+  width: 40px; height: 40px; padding: 0;
+  border-radius: var(--dgp-radius-round);
+  display:inline-flex; align-items:center; justify-content:center;
+  font-size:1.05rem;
+}
+.dgp-ctrl-btn.is-round:hover{ background:rgba(255,255,255,.12); }
+
+.dgp-modal__title {
+  margin: 0;
+  font-size: 1.4rem;
+  line-height: 1.3;
+  color: var(--dgp-modal-link, var(--dgp-accent, #6cd4ff));
+}
+
+.dgp-modal__close {
+  flex-shrink: 0;
+  width: 36px; height: 36px;
+  display: flex; align-items: center; justify-content: center;
+  background: color-mix(in srgb, var(--dgp-modal-text, #fff) 5%, transparent);
+  color: var(--dgp-modal-text, #fff);
+  border: 1px solid color-mix(in srgb, var(--dgp-modal-text, #fff) 20%, transparent);
+  border-radius: 999px;
+  cursor: pointer;
+  padding: 0; /* Wichtig für SVG-Zentrierung */
+  line-height: 1;
+  transition: background .2s, border-color .2s;
+}
+.dgp-modal__close:hover {
+  background: color-mix(in srgb, var(--dgp-modal-text, #fff) 10%, transparent);
+  border-color: color-mix(in srgb, var(--dgp-modal-text, #fff) 40%, transparent);
+}
+.dgp-modal__footer {
+  margin-top: 1.5rem;
+  padding-top: 1rem;
+  border-top: 1px solid color-mix(in srgb, var(--dgp-modal-text, #fff) 10%, transparent);
+  text-align: left;
+}
+.dgp-modal__close-link {
+  background: none;
+  border: none;
+  padding: 0;
+  color: var(--dgp-modal-link, var(--dgp-accent, #6cd4ff));
+  font-size: .9rem;
+  cursor: pointer;
+  opacity: .8;
+  transition: opacity .2s;
+}
+.dgp-modal__close-link:hover {
+  opacity: 1;
+}
+
+/* Focus */
+.dgp-nav-btn:focus, .dgp-dot:focus, .dgp-ctrl-btn:focus, .dgp-lightbox__close:focus, .dgp-modal__close:focus, .dgp-modal__close-link:focus {
+  outline: none;
+}
+.dgp-cube__face:focus-visible, .dgp-nav-btn:focus-visible, .dgp-dot:focus-visible, .dgp-ctrl-btn:focus-visible, .dgp-lightbox__close:focus-visible, .dgp-modal__close:focus-visible, .dgp-modal__close-link:focus-visible, .dgp-modal__dialog :is(a[href], button, textarea, input, select):focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px var(--dgp-focus, rgba(255,255,255,.35));
+}
+
+/* Reduced Motion */
+@media (prefers-reduced-motion: reduce) {
+  .wp-block-dgp-hube-cube .dgp-cube { transition:none !important; }
+}
+
+/* Native Fullscreen State */
+.wp-block-dgp-hube-cube.is-fullscreen {
+  width: 100% !important; height: 100% !important; padding: 2%;
+  --nav-h: 22%; /* Navigationsbereich im Vollbildmodus verkleinern */
+}
+.dgp-fs-close {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  z-index: 99999; /* Muss über dem Canvas liegen */
+  display: none; /* Standardmäßig ausblenden */
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  background: rgba(0,0,0,.3);
+  color: #fff;
+  border: 1px solid rgba(255,255,255,.4);
+  border-radius: 999px;
+  cursor: pointer;
+  padding: 0;
+  transition: background .2s, box-shadow .2s;
+}
+
+@media (max-width: 430px){
+  .dgp-nav-wrap--grid3{
+    row-gap: 8px;
+  }
+  .dgp-nav-controls{
+    gap: 12px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+}
+
+/* Schatten-Presets */
+.wp-block-dgp-hube-cube[data-shadows="1"][data-shadow-preset="soft"] {
+  --dgp-shadow-arrow: 0 2px 8px rgba(0,0,0,.2);
+  --dgp-shadow-arrow-hover: 0 4px 12px rgba(0,0,0,.25);
+  --dgp-shadow-ctrl: 0 1px 3px rgba(0,0,0,.15);
+  --dgp-shadow-ctrl-hover: 0 2px 6px rgba(0,0,0,.2);
+}
+.wp-block-dgp-hube-cube[data-shadows="1"][data-shadow-preset="medium"] {
+  --dgp-shadow-arrow: 0 4px 15px rgba(0,0,0,.3);
+  --dgp-shadow-arrow-hover: 0 6px 20px rgba(0,0,0,.35);
+  --dgp-shadow-ctrl: 0 2px 5px rgba(0,0,0,.2);
+  --dgp-shadow-ctrl-hover: 0 3px 8px rgba(0,0,0,.25);
+}
+
+/* Modal-Positionen */
+.dgp-modal.pos-center { align-items: center; justify-content: center; }
+.dgp-modal.pos-top-left { align-items: flex-start; justify-content: flex-start; }
+.dgp-modal.pos-top-center { align-items: flex-start; justify-content: center; }
+.dgp-modal.pos-top-right { align-items: flex-start; justify-content: flex-end; }
+.dgp-modal.pos-bottom-left { align-items: flex-end; justify-content: flex-start; }
+.dgp-modal.pos-bottom-center { align-items: flex-end; justify-content: center; }
+.dgp-modal.pos-bottom-right { align-items: flex-end; justify-content: flex-end; }

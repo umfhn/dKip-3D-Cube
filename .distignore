@@ -1,0 +1,62 @@
+# .distignore - Regeln für WordPress.org Plugin Repository und ZIP-Builds
+# DGP 3D Cube 360° v5.1.15-prp.0
+
+# Version Control & Git
+.git/
+.github/
+.gitignore
+.gitattributes
+
+# Development & Editor Files
+.vscode/
+.idea/
+*.code-workspace
+.history/
+*.log
+*.tmp
+.DS_Store
+Thumbs.db
+
+# Node.js & Package Management
+node_modules/
+package.json
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+.npmrc
+
+# Development Tools & Linting
+.eslintrc*
+.prettierrc*
+.stylelintrc*
+phpstan.neon
+phpcs.xml*
+.editorconfig
+.husky/
+
+# Testing & Coverage
+tests/
+coverage/
+reports/
+screenshots/
+
+# Build Tools & Development Scripts
+src/
+tools/
+scripts/
+examples/
+storybook/
+
+# Development Documentation & Internal Tickets
+docs/
+DKIP-*.md
+
+# Environment & Config Files
+*.env
+*.env.*
+local-config.php
+
+# Archive Files
+*.zip
+*.tar
+*.tar.gz

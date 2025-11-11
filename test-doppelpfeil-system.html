@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Doppelpfeil-System Test - Version 5.1.14</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        .test-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        .header {
+            background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        .header h1 {
+            margin: 0 0 10px 0;
+            font-size: 2.5em;
+            font-weight: 300;
+        }
+        .header p {
+            margin: 0;
+            opacity: 0.9;
+            font-size: 1.1em;
+        }
+        .cube-container {
+            padding: 40px;
+            text-align: center;
+            background: #f8f9fa;
+        }
+        .test-info {
+            padding: 30px;
+            background: #e8f4f8;
+            border-left: 5px solid #17a2b8;
+        }
+        .test-steps {
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        .test-steps h3 {
+            margin-top: 0;
+            color: #856404;
+        }
+        .step {
+            margin: 10px 0;
+            padding: 8px 0;
+            border-bottom: 1px solid #ffeaa7;
+        }
+        .step:last-child {
+            border-bottom: none;
+        }
+        .step-number {
+            display: inline-block;
+            width: 25px;
+            height: 25px;
+            background: #17a2b8;
+            color: white;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 25px;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+        .expected-result {
+            background: #d4edda;
+            border: 1px solid #c3e6cb;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 15px 0;
+        }
+        .expected-result h4 {
+            margin-top: 0;
+            color: #155724;
+        }
+        .status-panel {
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        .status-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 0;
+            border-bottom: 1px solid #dee2e6;
+        }
+        .status-item:last-child {
+            border-bottom: none;
+        }
+        .status-label {
+            font-weight: 600;
+        }
+        .status-value {
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            font-weight: 500;
+        }
+        .status-ok {
+            background: #d4edda;
+            color: #155724;
+        }
+        .status-error {
+            background: #f8d7da;
+            color: #721c24;
+        }
+        .status-warning {
+            background: #fff3cd;
+            color: #856404;
+        }
+    </style>
+</head>
+<body>
+    <div class="test-container">
+        <div class="header">
+            <h1>🎯 Doppelpfeil-System Test</h1>
+            <p>Version 5.1.14 - Alle 6 Seiten Navigation (front→right→back→left→top→bottom→front)</p>
+        </div>
+
+        <div class="test-info">
+            <h3>🔍 Test-Informationen</h3>
+            <p><strong>Problem:</strong> "Pfeilbutton links und rechts werden nur seite 1 bis seite 3 angezeigt, es fehlt seite 4 bis seite 6"</p>
+            <p><strong>Lösung:</strong> Doppelpfeil-System für vollständige 6-Seiten-Navigation implementiert</p>
+            <p><strong>Version:</strong> 5.1.14 (repariert und optimiert)</p>
+        </div>
+
+        <div class="cube-container">
+            <h2>🧊 3D-Würfel Test-Interface</h2>
+            
+            <!-- Test-Würfel mit Doppelpfeil-System -->
+            <div class="wp-block-dgp-hube-cube" 
+                 data-uid="test-5-1-14" 
+                 data-show-nav="1"
+                 data-show-action="1"
+                 data-show-audio="0"
+                 data-show-zoom="1"
+                 data-vertical-toggle="1"
+                 data-arrow-mode="linear6"
+                 data-wrap-mode="ring"
+                 style="width: 400px; margin: 0 auto;">
+                
+                <script class="dgp-images" type="application/json">[{
+                    "url": "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjMzc0NEU2Ii8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxOCIgZmlsbD0id2hpdGUiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGR5PSIuM2VtIj5Gcm9udCA8L3RleHQ+PC9zdmc+",
+                    "label": "Seite 1: Front (Vorderseite)",
+                    "alt": "Front View",
+                    "action": "none"
+                }, {
+                    "url": "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjMTBCOUY4Ii8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxOCIgZmlsbD0id2hpdGUiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGR5PSIuM2VtIj5SaWdodCA8L3RleHQ+PC9zdmc+",
+                    "label": "Seite 2: Right (Rechts)",
+                    "alt": "Right View",
+                    "action": "none"
+                }, {
+                    "url": "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjMTBCOUY4Ii8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxOCIgZmlsbD0id2hpdGUiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGR5PSIuM2VtIj5CaWNrIDwvdGV4dD48L3N2Zz4=",
+                    "label": "Seite 3: Back (Rückseite)",
+                    "alt": "Back View",
+                    "action": "none"
+                }, {
+                    "url": "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjRERERDBCIi8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxOCIgZmlsbD0iIzAwMCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPkxlZnQgPC90ZXh0Pjwvc3ZnPg==",
+                    "label": "Seite 4: Left (Links)",
+                    "alt": "Left View",
+                    "action": "none"
+                }, {
+                    "url": "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjRkZENzAwIi8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxOCIgZmlsbD0iIzAwMCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPlRvcCA8L3RleHQ+PC9zdmc+",
+                    "label": "Seite 5: Top (Oben)",
+                    "alt": "Top View",
+                    "action": "none"
+                }, {
+                    "url": "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjMTAwOTFFIi8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxOCIgZmlsbD0id2hpdGUiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGR5PSIuM2VtIj5Cb3R0b20gPC90ZXh0Pjwvc3ZnPg==",
+                    "label": "Seite 6: Bottom (Unten)",
+                    "alt": "Bottom View",
+                    "action": "none"
+                }]</script>
+                
+                <div class="dgp-cube-canvas">
+                    <div class="dgp-cube-scene">
+                        <div class="dgp-cube">
+                            <!-- Würfelseiten werden automatisch generiert -->
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="dgp-cube-nav">
+                    <!-- Navigation wird automatisch generiert -->
+                </div>
+                
+                <div class="dgp-cube-a11y">
+                    <!-- Barrierefreiheit-Informationen -->
+                </div>
+            </div>
+        </div>
+
+        <div class="test-steps">
+            <h3>📋 Test-Anleitung</h3>
+            <div class="step">
+                <span class="step-number">1</span>
+                <strong>Horizontale Navigation (← → Pfeile):</strong> Navigation durch die 4 Gürtel-Seiten (front→right→back→left→front)
+            </div>
+            <div class="step">
+                <span class="step-number">2</span>
+                <strong>Vertikale Navigation (Doppelpfeil ↑↓):</strong> 
+                <br>• Von Gürtel-Seiten → Top-Seite
+                <br>• Von Top → Bottom-Seite  
+                <br>• Von Bottom → zurück zum Gürtel
+            </div>
+            <div class="step">
+                <span class="step-number">3</span>
+                <strong>360° kontinuierliche Navigation:</strong> Alle 6 Seiten sind ohne Blockaden erreichbar
+            </div>
+        </div>
+
+        <div class="expected-result">
+            <h4>✅ Erwartete Ergebnisse</h4>
+            <ul>
+                <li><strong>Horizontale Pfeile (← →):</strong> Navigation durch front→right→back→left→front</li>
+                <li><strong>Doppelpfeil (↑↓):</strong> Gürtel → Top → Bottom → Gürtel (intelligente State-Machine)</li>
+                <li><strong>Alle 6 Seiten erreichbar:</strong> front, right, back, left, top, bottom</li>
+                <li><strong>Keine Blockaden:</strong> Kontinuierliche 360°-Rotation ohne Stopps</li>
+                <li><strong>Accessibility:</strong> ARIA-Labels und Screen-Reader-Unterstützung</li>
+            </ul>
+        </div>
+
+        <div class="status-panel">
+            <h3>📊 System-Status</h3>
+            <div class="status-item">
+                <span class="status-label">Doppelpfeil-System:</span>
+                <span class="status-value status-ok">AKTIVIERT</span>
+            </div>
+            <div class="status-item">
+                <span class="status-label">6-Seiten-Modus:</span>
+                <span class="status-value status-ok">LINEAR6</span>
+            </div>
+            <div class="status-item">
+                <span class="status-label">360°-Navigation:</span>
+                <span class="status-value status-ok">KONTINUIERLICH</span>
+            </div>
+            <div class="status-item">
+                <span class="status-label">Version:</span>
+                <span class="status-value status-ok">5.1.14</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- CSS einbinden -->
+    <link rel="stylesheet" href="build/style.css">
+    <link rel="stylesheet" href="build/editor.css">
+    
+    <!-- JavaScript einbinden -->
+    <script src="build/view.js"></script>
+</body>
+</html>

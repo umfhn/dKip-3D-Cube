@@ -1,0 +1,25 @@
+CLEANUP CONTENTS REPORT - dgp-hube v5.1.15-prp.0
+==========================================================
+Generated: 2025-11-11T21:21:36Z
+ZIP Package: dgp-hube-v5.1.15-prp.0-clean.zip
+Package Size: 84K
+
+VERIFICATION:
+=============
+
+✅ CORE PLUGIN FILES:
+--------------------
+     9038  11-11-2025 21:21   dgp-hube.php
+    17200  11-11-2025 21:21   README.md
+     4000  11-11-2025 21:21   changelog.txt
+
+✅ BUILD ASSETS:
+-----------------
+    20000  11-11-2025 21:21   build/index.js
+     9500  11-11-2025 21:21   build/view.js
+     6800  11-11-2025 21:21   build/modal.js
+     9900  11-11-2025 21:21   build/style.css
+     8900  11-11-2025 21:21   build/editor.css
+
+DEPLOYMENT READINESS: YES
+==========================================================

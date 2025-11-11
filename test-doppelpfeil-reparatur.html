@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Doppelpfeil-Funktion Test - Version 5.1.17</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        .test-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        .header {
+            background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        .header h1 {
+            margin: 0 0 10px 0;
+            font-size: 2.5em;
+            font-weight: 300;
+        }
+        .fix-notice {
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+            color: white;
+            padding: 20px;
+            text-align: center;
+            font-size: 1.2em;
+            font-weight: 600;
+        }
+        .cube-container {
+            padding: 40px;
+            text-align: center;
+            background: #f8f9fa;
+        }
+        .test-steps {
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        .test-steps h3 {
+            margin-top: 0;
+            color: #856404;
+        }
+        .step {
+            margin: 10px 0;
+            padding: 8px 0;
+            border-bottom: 1px solid #ffeaa7;
+        }
+        .step:last-child {
+            border-bottom: none;
+        }
+        .step-number {
+            display: inline-block;
+            width: 25px;
+            height: 25px;
+            background: #17a2b8;
+            color: white;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 25px;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+        .expected-result {
+            background: #d4edda;
+            border: 1px solid #c3e6cb;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 15px 0;
+        }
+        .expected-result h4 {
+            margin-top: 0;
+            color: #155724;
+        }
+        .status-panel {
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        .status-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 0;
+            border-bottom: 1px solid #dee2e6;
+        }
+        .status-item:last-child {
+            border-bottom: none;
+        }
+        .status-label {
+            font-weight: 600;
+        }
+        .status-value {
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            font-weight: 500;
+        }
+        .status-ok {
+            background: #d4edda;
+            color: #155724;
+        }
+        .status-error {
+            background: #f8d7da;
+            color: #721c24;
+        }
+        .status-warning {
+            background: #fff3cd;
+            color: #856404;
+        }
+        .fix-description {
+            background: #e8f4f8;
+            border-left: 5px solid #17a2b8;
+            padding: 20px;
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="test-container">
+        <div class="header">
+            <h1>🔧 Doppelpfeil-Funktion Test</h1>
+            <p>Version 5.1.17 - Funktion repariert</p>
+        </div>
+
+        <div class="fix-notice">
+            ✅ FEHLER BEHOBEN: Doppelpfeil-Funktion repariert
+        </div>
+
+        <div class="fix-description">
+            <h3>🐛 Identifiziertes Problem:</h3>
+            <p><strong>Problem:</strong> Doppelpfeil wurde angezeigt, aber funktionierte nicht</p>
+            <p><strong>Ursache:</strong> handleVerticalDoubleArrowClick() hatte Guard-Condition <code>if (!this.verticalToggleEnabled) return;</code></p>
+            <p><strong>Lösung:</strong> Guard-Condition entfernt - Doppelpfeil funktioniert jetzt immer</p>
+        </div>
+
+        <div class="cube-container">
+            <h2>🧊 3D-Würfel - Doppelpfeil Funktion Test</h2>
+            
+            <!-- Test-Würfel mit repariertem Doppelpfeil -->
+            <div class="wp-block-dgp-hube-cube" 
+                 data-uid="test-doppelpfeil-fix-5-1-17" 
+                 data-show-nav="1"
+                 data-show-action="1"
+                 data-show-audio="0"
+                 data-show-zoom="1"
+                 data-vertical-toggle="0"
+                 data-arrow-mode="linear6"
+                 data-wrap-mode="ring"
+                 style="width: 400px; margin: 0 auto;">
+                
+                <script class="dgp-images" type="application/json">[{
+                    "url": "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjMzc0NEU2Ii8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIyMCIgZmlsbD0id2hpdGUiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGR5PSIuM2VtIj5Gcm9udCBTdGFydDwvdGV4dD48L3N2Zz4=",
+                    "label": "Seite 1: Front (Start)",
+                    "alt": "Front View",
+                    "action": "none"
+                }, {
+                    "url": "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjMTBCOUY4Ii8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIyMCIgZmlsbD0id2hpdGUiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGR5PSIuM2VtIj5SaWdodCA8L3RleHQ+PC9zdmc+",
+                    "label": "Seite 2: Right",
+                    "alt": "Right View",
+                    "action": "none"
+                }, {
+                    "url": "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjMTBCOUY4Ii8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIyMCIgZmlsbD0id2hpdGUiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGR5PSIuM2VtIj5CYWNrIDwvdGV4dD48L3N2Zz4=",
+                    "label": "Seite 3: Back",
+                    "alt": "Back View",
+                    "action": "none"
+                }, {
+                    "url": "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjRERERDBCIi8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIyMCIgZmlsbD0iIzAwMCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPkxlZnQgPC90ZXh0Pjwvc3ZnPg==",
+                    "label": "Seite 4: Left",
+                    "alt": "Left View",
+                    "action": "none"
+                }, {
+                    "url": "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjRkZENzAwIi8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIyMCIgZmlsbD0iIzAwMCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPlRvcCA8L3RleHQ+PC9zdmc+",
+                    "label": "Seite 5: Top (via Doppelpfeil)",
+                    "alt": "Top View",
+                    "action": "none"
+                }, {
+                    "url": "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjMTAwOTFFIi8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIyMCIgZmlsbD0id2hpdGUiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGR5PSIuM2VtIj5Cb3R0b20IDwvdGV4dD48L3N2Zz4=",
+                    "label": "Seite 6: Bottom (via Doppelpfeil)",
+                    "alt": "Bottom View",
+                    "action": "none"
+                }]</script>
+                
+                <div class="dgp-cube-canvas">
+                    <div class="dgp-cube-scene">
+                        <div class="dgp-cube">
+                            <!-- Würfelseiten werden automatisch generiert -->
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="dgp-cube-nav">
+                    <!-- Navigation wird automatisch generiert -->
+                </div>
+                
+                <div class="dgp-cube-a11y">
+                    <!-- Barrierefreiheit-Informationen -->
+                </div>
+            </div>
+        </div>
+
+        <div class="test-steps">
+            <h3>📋 Doppelpfeil-Funktion Test</h3>
+            <div class="step">
+                <span class="step-number">1</span>
+                <strong>Horizontale Navigation (← → Pfeile):</strong> Navigation durch die 4 Gürtel-Seiten (front→right→back→left→front)
+            </div>
+            <div class="step">
+                <span class="step-number">2</span>
+                <strong>Doppelpfeil (↑↓) Test - Start auf Front:</strong> 
+                Klick auf Doppelpfeil → sollte zu "Top" navigieren
+            </div>
+            <div class="step">
+                <span class="step-number">3</span>
+                <strong>Doppelpfeil (↑↓) Test - Auf Top:</strong> 
+                Klick auf Doppelpfeil → sollte zu "Bottom" navigieren
+            </div>
+            <div class="step">
+                <span class="step-number">4</span>
+                <strong>Doppelpfeil (↑↓) Test - Auf Bottom:</strong> 
+                Klick auf Doppelpfeil → sollte zurück zum letzten Gürtel (front) navigieren
+            </div>
+        </div>
+
+        <div class="expected-result">
+            <h4>✅ Erwartete Ergebnisse nach Reparatur:</h4>
+            <ul>
+                <li><strong>Nur 3 Buttons sichtbar:</strong> [←] [↑↓] [→]</li>
+                <li><strong>Doppelpfeil funktioniert:</strong> Gürtel→Top→Bottom→Gürtel (State-Machine)</li>
+                <li><strong>Alle 6 Seiten erreichbar:</strong> front, right, back, left, top, bottom</li>
+                <li><strong>Keine separaten Pfeile:</strong> ↑ und ↓ einzeln nicht mehr sichtbar</li>
+                <li><strong>Intelligente Navigation:</strong> Kontextabhängige Doppelpfeil-Aktionen</li>
+            </ul>
+        </div>
+
+        <div class="status-panel">
+            <h3>🔧 Reparatur-Details</h3>
+            <div class="status-item">
+                <span class="status-label">Problem:</span>
+                <span class="status-value status-error">handleVerticalDoubleArrowClick() Blockiert</span>
+            </div>
+            <div class="status-item">
+                <span class="status-label">Ursache:</span>
+                <span class="status-value status-warning">if (!this.verticalToggleEnabled) return;</span>
+            </div>
+            <div class="status-item">
+                <span class="status-label">Lösung:</span>
+                <span class="status-value status-ok">Guard-Condition entfernt</span>
+            </div>
+            <div class="status-item">
+                <span class="status-label">Status:</span>
+                <span class="status-value status-ok">Version 5.1.17 - REPARIERT</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- CSS einbinden -->
+    <link rel="stylesheet" href="build/style.css">
+    <link rel="stylesheet" href="build/editor.css">
+    
+    <!-- JavaScript einbinden -->
+    <script src="build/view.js"></script>
+</body>
+</html>

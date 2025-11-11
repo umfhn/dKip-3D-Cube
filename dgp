@@ -1,0 +1,516 @@
+/**
+ * DGP 3D Cube NEXT (v6.0.0-prp.0) - Navigation Kernel
+ * 
+ * Implementation of the deterministic State Machine with H-01 rules
+ * Requirements:
+ * - Stable 360° Navigation (horizontal belt)
+ * - Deterministic Top/Bottom with restore via lastBeltFace
+ * - No Dead-States
+ * - Exactly 1 change event per final state
+ * - No-Op produces no event
+ */
+
+class CubeController {
+    /**
+     * @param {HTMLElement} container - The main cube container
+     * @param {Object} options - Configuration options
+     */
+    constructor(container, options = {}) {
+        this.container = container;
+        this.options = {
+            // Default values per Pflichtenheft §19
+            animationDuration: 240, // 240-360ms range
+            easing: 'ease-in-out',
+            dragThreshold: 12, // 10-16px range
+            flingVelocity: 700, // 600-800px/s range
+            wrapMode: 'off',
+            arrowMode: 'orthogonal',
+            verticalSwipe: true,
+            debug: false,
+            ...options
+        };
+        
+        // State Machine State (Pflichtenheft §5)
+        this.state = {
+            activeFace: 'front',
+            virtualIndex: 0,
+            _isAnimating: false,
+            _isSnapping: false,
+            axisFreeze: true,
+            lastBeltFace: 'front'
+        };
+        
+        // Interaction tracking
+        this.interactionId = 0;
+        this.inputQueue = [];
+        this.isProcessing = false;
+        
+        // Debug API
+        if (this.options.debug) {
+            window.__cube = {
+                getDebugState: () => this.getDebugState(),
+                getState: () => ({ ...this.state }),
+                getQueue: () => [...this.inputQueue]
+            };
+        }
+        
+        // Event Bus setup
+        this.setupEventBus();
+        
+        // Input router initialization (T-02)
+        this.setupInputRouter();
+        
+        // Initialize cube faces
+        this.initializeFaces();
+        
+        console.log('[DGP-CUBE-NEXT] CubeController initialized', this.state);
+    }
+    
+    /**
+     * Setup CustomEvent bus for change events
+     */
+    setupEventBus() {
+        this.changeEvent = new CustomEvent('dgp:hube:change', {
+            bubbles: true,
+            cancelable: true,
+            detail: {}
+        });
+    }
+    
+    /**
+     * Initialize cube faces with proper positioning
+     */
+    initializeFaces() {
+        const cube = this.container.querySelector('.dgp-cube');
+        if (!cube) return;
+        
+        // Ensure 6 faces exist
+        const faces = ['front', 'right', 'back', 'left', 'top', 'bottom'];
+        cube.innerHTML = faces.map(face => `
+            <div class="dgp-cube-face dgp-cube-face-${face}" 
+                 data-face="${face}" 
+                 role="button" 
+                 tabindex="0"
+                 aria-label="Zur ${face} Seite navigieren">
+                <img src="" alt="" style="display: none;">
+            </div>
+        `).join('');
+    }
+    
+    /**
+     * Process input with deterministic rules (Pflichtenheft §6)
+     */
+    async processInput(input) {
+        if (this.isProcessing) {
+            this.queueInput(input);
+            return;
+        }
+        
+        this.isProcessing = true;
+        const interactionId = ++this.interactionId;
+        
+        try {
+            // H-01: Mitigation of parallel turns
+            if (this.state._isAnimating || this.state._isSnapping || this.state.axisFreeze) {
+                if (this.shouldQueue(input)) {
+                    this.queueInput(input);
+                    return;
+                } else {
+                    // Drop input according to policy
+                    this.logDebug('Input dropped during animation', { input, state: { ...this.state } });
+                    return;
+                }
+            }
+            
+            // Determine next state
+            const nextState = this.calculateNextState(input);
+            if (!nextState) {
+                this.logDebug('Invalid input - No state change', { input });
+                return;
+            }
+            
+            // Check if state actually changes (No-Op rule)
+            if (nextState.activeFace === this.state.activeFace) {
+                this.logDebug('No-Op detected - No event will be fired', { from: this.state, to: nextState });
+                return;
+            }
+            
+            // Update state
+            const fromState = { ...this.state };
+            this.applyState(nextState);
+            
+            // Trigger change event (exactly 1 per final state)
+            this.dispatchChangeEvent(interactionId, fromState.activeFace, nextState.activeFace, input);
+            
+        } finally {
+            this.isProcessing = false;
+            
+            // Process queued inputs
+            if (this.inputQueue.length > 0) {
+                const nextInput = this.inputQueue.shift();
+                setTimeout(() => this.processInput(nextInput), 0);
+            }
+        }
+    }
+    
+    /**
+     * Calculate next state based on input and current state
+     */
+    calculateNextState(input) {
+        const currentFace = this.state.activeFace;
+        let nextFace = currentFace;
+        
+        switch (input.type) {
+            case 'arrowLeft':
+                nextFace = this.moveLeft(currentFace);
+                break;
+            case 'arrowRight':
+                nextFace = this.moveRight(currentFace);
+                break;
+            case 'arrowUp':
+                nextFace = this.moveUp(currentFace);
+                break;
+            case 'arrowDown':
+                nextFace = this.moveDown(currentFace);
+                break;
+            case 'doubleArrow':
+                nextFace = this.toggleVertical(currentFace);
+                break;
+            case 'dotSelect':
+                nextFace = this.selectDot(input.index);
+                break;
+            default:
+                return null;
+        }
+        
+        if (!nextFace || nextFace === currentFace) {
+            return null;
+        }
+        
+        // Update virtualIndex for wrap mode (Pflichtenheft §5.4)
+        const virtualIndexChange = this.getVirtualIndexChange(currentFace, nextFace);
+        const newVirtualIndex = this.state.virtualIndex + virtualIndexChange;
+        
+        return {
+            ...this.state,
+            activeFace: nextFace,
+            virtualIndex: newVirtualIndex,
+            lastBeltFace: this.updateLastBeltFace(nextFace)
+        };
+    }
+    
+    /**
+     * Navigation logic for 6 faces
+     */
+    moveLeft(fromFace) {
+        const beltFaces = ['front', 'right', 'back', 'left'];
+        const faceMap = {
+            'front': 'left',
+            'left': 'back',
+            'back': 'right',
+            'right': 'front'
+        };
+        
+        if (faceMap[fromFace]) {
+            return faceMap[fromFace];
+        }
+        
+        // For top/bottom faces, preserve current orientation
+        if (fromFace === 'top') return 'bottom';
+        if (fromFace === 'bottom') return 'top';
+        
+        return fromFace;
+    }
+    
+    moveRight(fromFace) {
+        const beltFaces = ['front', 'right', 'back', 'left'];
+        const faceMap = {
+            'front': 'right',
+            'right': 'back',
+            'back': 'left',
+            'left': 'front'
+        };
+        
+        if (faceMap[fromFace]) {
+            return faceMap[fromFace];
+        }
+        
+        if (fromFace === 'top') return 'bottom';
+        if (fromFace === 'bottom') return 'top';
+        
+        return fromFace;
+    }
+    
+    moveUp(fromFace) {
+        // Only vertical faces can go up to belt
+        const verticalFaces = ['top', 'bottom'];
+        if (verticalFaces.includes(fromFace)) {
+            return this.state.lastBeltFace || 'front';
+        }
+        
+        // From belt faces, go to top
+        return 'top';
+    }
+    
+    moveDown(fromFace) {
+        // Only vertical faces can go down to belt
+        const verticalFaces = ['top', 'bottom'];
+        if (verticalFaces.includes(fromFace)) {
+            return this.state.lastBeltFace || 'front';
+        }
+        
+        // From belt faces, go to bottom
+        return 'bottom';
+    }
+    
+    toggleVertical(fromFace) {
+        // Double arrow toggles between current and opposite vertical
+        if (fromFace === 'top') return 'bottom';
+        if (fromFace === 'bottom') return 'top';
+        
+        return 'front'; // Default to front when toggling from belt
+    }
+    
+    selectDot(index) {
+        const faces = ['front', 'right', 'back', 'left', 'top', 'bottom'];
+        if (index >= 0 && index < faces.length) {
+            return faces[index];
+        }
+        return this.state.activeFace;
+    }
+    
+    /**
+     * Get virtual index change for wrap calculations
+     */
+    getVirtualIndexChange(fromFace, toFace) {
+        const faceOrder = ['front', 'right', 'back', 'left', 'top', 'bottom'];
+        const fromIndex = faceOrder.indexOf(fromFace);
+        const toIndex = faceOrder.indexOf(toFace);
+        
+        if (fromIndex === -1 || toIndex === -1) return 0;
+        
+        // Handle wrap mode (ring) - only horizontal
+        if (this.options.wrapMode === 'ring') {
+            // Check if moving horizontally within belt
+            const beltFaces = ['front', 'right', 'back', 'left'];
+            if (beltFaces.includes(fromFace) && beltFaces.includes(toFace)) {
+                let diff = toIndex - fromIndex;
+                if (Math.abs(diff) > 2) {
+                    diff = diff > 0 ? diff - 6 : diff + 6;
+                }
+                return diff;
+            }
+        }
+        
+        return Math.sign(toIndex - fromIndex);
+    }
+    
+    /**
+     * Update lastBeltFace tracking
+     */
+    updateLastBeltFace(face) {
+        const beltFaces = ['front', 'right', 'back', 'left'];
+        if (beltFaces.includes(face)) {
+            return face;
+        }
+        return this.state.lastBeltFace;
+    }
+    
+    /**
+     * Apply state change with animation
+     */
+    applyState(newState) {
+        this.state = { ...newState, _isAnimating: true };
+        
+        const cube = this.container.querySelector('.dgp-cube');
+        if (!cube) return;
+        
+        // Calculate transform based on active face
+        const transform = this.getFaceTransform(newState.activeFace);
+        cube.style.transform = transform;
+        
+        // Set animation flags
+        setTimeout(() => {
+            this.state._isAnimating = false;
+            this.state._isSnapping = true;
+            
+            setTimeout(() => {
+                this.state._isSnapping = false;
+            }, 150);
+        }, this.options.animationDuration);
+    }
+    
+    /**
+     * Get CSS transform for specific face
+     */
+    getFaceTransform(face) {
+        const transforms = {
+            'front': 'rotateX(0deg) rotateY(0deg)',
+            'right': 'rotateX(0deg) rotateY(-90deg)',
+            'back': 'rotateX(0deg) rotateY(-180deg)',
+            'left': 'rotateX(0deg) rotateY(90deg)',
+            'top': 'rotateX(-90deg) rotateY(0deg)',
+            'bottom': 'rotateX(90deg) rotateY(0deg)'
+        };
+        
+        return transforms[face] || transforms.front;
+    }
+    
+    /**
+     * Determine if input should be queued
+     */
+    shouldQueue(input) {
+        // Queue mouse/touch inputs, drop keyboard during animation
+        return input.type === 'drag' || input.type === 'fling';
+    }
+    
+    /**
+     * Queue input for later processing
+     */
+    queueInput(input) {
+        this.inputQueue.push(input);
+        
+        // Limit queue size to prevent memory issues
+        if (this.inputQueue.length > 10) {
+            this.inputQueue.shift();
+        }
+    }
+    
+    /**
+     * Dispatch change event with proper detail data
+     */
+    dispatchChangeEvent(interactionId, from, to, input) {
+        const eventDetail = {
+            interactionId,
+            from,
+            to,
+            fromFace: from,
+            toFace: to,
+            axis: this.getAxis(from, to),
+            dir: this.getDirection(from, to),
+            mode: this.options.arrowMode,
+            total: 6,
+            timestamp: Date.now()
+        };
+        
+        // Add additional info based on input type
+        if (input.type === 'dotSelect') {
+            eventDetail.step = 'dot';
+        } else if (input.type === 'doubleArrow') {
+            eventDetail.step = 'toggle';
+        } else {
+            eventDetail.step = 'arrow';
+        }
+        
+        this.changeEvent.detail = eventDetail;
+        this.container.dispatchEvent(this.changeEvent);
+        
+        this.logDebug('Change event dispatched', eventDetail);
+    }
+    
+    /**
+     * Get axis of movement
+     */
+    getAxis(from, to) {
+        const horizontalFaces = ['front', 'right', 'back', 'left'];
+        if (horizontalFaces.includes(from) && horizontalFaces.includes(to)) {
+            return 'x';
+        }
+        if (from === 'top' || from === 'bottom' || to === 'top' || to === 'bottom') {
+            return 'y';
+        }
+        return 'x';
+    }
+    
+    /**
+     * Get direction of movement
+     */
+    getDirection(from, to) {
+        const order = ['front', 'right', 'back', 'left'];
+        const fromIndex = order.indexOf(from);
+        const toIndex = order.indexOf(to);
+        
+        if (fromIndex === -1 || toIndex === -1) {
+            if (from === 'top' || to === 'top') return 'up';
+            if (from === 'bottom' || to === 'bottom') return 'down';
+            return 'none';
+        }
+        
+        const diff = toIndex - fromIndex;
+        if (Math.abs(diff) === 1 || Math.abs(diff) === 3) {
+            return diff > 0 ? 'right' : 'left';
+        }
+        
+        return 'none';
+    }
+    
+    /**
+     * Get debug state (read-only)
+     */
+    getDebugState() {
+        return {
+            state: { ...this.state },
+            options: { ...this.options },
+            queueLength: this.inputQueue.length,
+            interactionId: this.interactionId,
+            version: '6.0.0-prp.0'
+        };
+    }
+    
+    /**
+     * Debug logging (only in debug mode)
+     */
+    logDebug(message, data) {
+        if (this.options.debug) {
+            console.log(`[DGP-CUBE-NEXT-DEBUG] ${message}`, data);
+        }
+    }
+    
+    /**
+     * Setup input router (delegated to InputRouter class)
+     */
+    setupInputRouter() {
+        // This will be implemented in T-02
+        // For now, basic keyboard input
+        this.container.addEventListener('keydown', (event) => {
+            this.handleKeyboardInput(event);
+        });
+    }
+    
+    /**
+     * Basic keyboard input handling
+     */
+    handleKeyboardInput(event) {
+        const key = event.key;
+        let input = null;
+        
+        switch (key) {
+            case 'ArrowLeft':
+                input = { type: 'arrowLeft' };
+                break;
+            case 'ArrowRight':
+                input = { type: 'arrowRight' };
+                break;
+            case 'ArrowUp':
+                input = { type: 'arrowUp' };
+                break;
+            case 'ArrowDown':
+                input = { type: 'arrowDown' };
+                break;
+            case ' ': // Space for double arrow
+                event.preventDefault();
+                input = { type: 'doubleArrow' };
+                break;
+        }
+        
+        if (input) {
+            event.preventDefault();
+            this.processInput(input);
+        }
+    }
+}
+
+// Export for use in other modules
+if (typeof module !== 'undefined' && module.exports) {
+    module.exports = CubeController;
+}
